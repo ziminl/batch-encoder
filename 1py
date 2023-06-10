@@ -1,0 +1,65 @@
+
+
+
+
+import random, string, io
+import base64
+
+print("program start 'z' ")
+
+def log(str):
+    print("-> " + str)
+
+# ================= CONFIGURATION ==================
+# Rest of the code...
+
+# -> Transformers
+tra_charvar_rename = True
+tra_uselesscode_troll = True
+tra_base64_encode = True  # New method: Base64 encoding
+
+# Rest of the code...
+
+# utility
+def random_string_generator(min, max):
+    return ''.join(random.choice(obf_charset) for x in range(random.randrange(min, max)))
+
+lines_raw = []
+lines_pre = []
+lines_obf = []
+lines_final = []
+
+log("mappings")
+ignore = string.digits + string.whitespace + string.punctuation
+
+def obfuscate(line):
+    obfl = ""
+    for char in line:
+        if not char in ignore:
+            obfl = obfl + f"%{mappings[char]}%"
+        else:
+            obfl = obfl + char
+    return obfl
+
+def base64_encode(line):
+    encoded = base64.b64encode(line.encode('utf-8')).decode('utf-8')
+    return f"certutil -decode {encoded} temp.bat & type temp.bat & del /f /q temp.bat"
+
+for line in lines_pre:
+    if line.startswith("rem "): continue
+    if tra_charvar_rename:
+        lines_obf.append(obfuscate(line))
+    if tra_uselesscode_troll:
+        num = random.randrange(0, 100)
+        if num < obf_add_cmds_chance:
+            for i in range(obf_add_cmds_times):
+                lines_obf.append(obfuscate(random.choice(obf_add_cmds_list)))
+    if tra_base64_encode:
+        lines_obf.append(base64_encode(line))  # Adding base64-encoded version of each line
+
+print()
+log("done")
+
+
+
+
