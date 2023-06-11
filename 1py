@@ -28,6 +28,23 @@ lines_raw = []
 lines_pre = []
 lines_obf = []
 lines_final = []
+headers = []
+mappings = {}
+
+# read src
+log("Reading InFile")
+lines_raw = open(infile).readlines()
+log("Cleaning")
+for line in lines_raw:
+    lines_pre.append(line.strip())
+
+# generate headers and mappings
+log(f"Generating Mappings ({str(len(obf_charset))} items)")
+for char in obf_charset:
+    mp = random_string_generator(obf_varmin, obf_varmax)
+    mappings[char] = mp
+    headers.append(f"set {mp}={char}")
+log("Done!")
 
 log("mappings")
 ignore = string.digits + string.whitespace + string.punctuation
